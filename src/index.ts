@@ -27,11 +27,11 @@ const limiter = RateLimit({
 // Apply rate limiter to all requests
 app.use(limiter);
 
-const server = http.createServer(app);
+/* const server = http.createServer(app);
 
 server.listen(8080, () => {
     console.log("Server running on http://localhost:8080/");
-});
+}); */
 
 const MONGO_DEV_URL = 'mongodb+srv://cartersk23:GZoaPBY9iBiE8Wl0@cluster0.nrmxdit.mongodb.net/?retryWrites=true&w=majority';
 const mongoDB = process.env.MONGODB_URI || MONGO_DEV_URL;
