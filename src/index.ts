@@ -1,16 +1,16 @@
 import express from 'express';
-import http from 'http';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import router from './router';
-import 'dotenv/config';
+import { config } from 'dotenv';
 import helmet from 'helmet';
 import RateLimit from 'express-rate-limit';
 
 const app = express();
+config();
 
 app.use(cors({
     credentials: true
@@ -27,25 +27,15 @@ const limiter = RateLimit({
 // Apply rate limiter to all requests
 app.use(limiter);
 
-const server = http.createServer(app);
-const port = process.env.PORT || 8080;
-
-
-server.listen(port, () => {
-    console.log("Server running on http://localhost:8080/");
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`listening on port ${port}`);
 });
 
-
-// Listen on `port` and 0.0.0.0
-/* app.listen(port, "0.0.0.0", function () {
-  console.log("Server running on http://localhost:8080/");
-}); */
-
-const MONGO_DEV_URL = 'mongodb+srv://cartersk23:GZoaPBY9iBiE8Wl0@cluster0.nrmxdit.mongodb.net/?retryWrites=true&w=majority';
-const mongoDB = process.env.MONGODB_URI || MONGO_DEV_URL;
+const mongoDB = process.env.MONGODB_URI;
 
 mongoose.Promise = Promise;
-mongoose.connect(mongoDB);
+mongoose.connect(String(mongoDB));
 mongoose.connection.on('error', (error: Error) => console.log(error));
 
 app.use('/', router());

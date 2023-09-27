@@ -10,7 +10,7 @@ export const isOwner = async (
 ) => {
   try {
     const { id } = req.params;
-    const currentUserId = get(req, "identity._id") as string;
+    const currentUserId = get(req, "identity._id") as unknown as string;
 
     if (!currentUserId) {
       return res.sendStatus(403);
@@ -19,7 +19,7 @@ export const isOwner = async (
       return res.sendStatus(403);
     }
 
-    next();
+    return next();
   } catch (error) {
     console.log(error);
     return res.sendStatus(400);
